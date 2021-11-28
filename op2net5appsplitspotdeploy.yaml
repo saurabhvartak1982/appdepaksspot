@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: op2ns
+  name: net5app-deployment-spot
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: net5app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: net5app
+    spec:
+      containers:
+      - name: net5appcont
+        image: <your image details here>
+        ports:
+        - containerPort: 5001
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "500Mi"
+          limits:
+            cpu: "500m"
+            memory: "750Mi"
+      tolerations:
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Equal"
+        value: "spot"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workloadtype
+                operator: In
+                values:
+                - batch

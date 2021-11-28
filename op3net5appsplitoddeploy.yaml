@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: op3ns
+  name: net5app-deployment-od
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: net5app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: net5app
+    spec:
+      containers:
+      - name: net5appcont
+        image: <your image details here>
+        ports:
+        - containerPort: 5001
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "500Mi"
+          limits:
+            cpu: "500m"
+            memory: "750Mi"
+      tolerations:
+      - key: "pooltype"
+        operator: "Equal"
+        value: "primary"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workloadtype
+                operator: In
+                values:
+                - critical
+
