@@ -22,7 +22,8 @@ az aks nodepool add --resource-group kedapoc-rg --cluster-name kedapocaks --name
 <b>Below is how the NodePools are looking on the Azure Portal</b> <br /><br />
 ![Portal Node Pools](images/portalnodepools.png) <br /><br />
 
-Now there are 3 different options of patterns in which the application pods can be distributed across the OnDemand and Spot NodePools. The same are as documented below:
+<b>Kindly note that none of the application pods will get deployed to the System NodePool <b>systempool</b> as this System NodePool is created with Taint <b>CriticalAddonsOnly=true:NoSchedule</b> which none of the application pods are tolerating.<br /><br />
+<b>Now there are 3 different options of patterns in which the application pods can be distributed across the OnDemand and Spot NodePools. The same are as documented in the following sections. Please go through the links mentioned in the References before reading on the 3 below options</b>.
 
 ## Option 1: <br />
 In this option we will make use of the below files: <br /><br />
