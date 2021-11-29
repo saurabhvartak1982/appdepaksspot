@@ -19,6 +19,9 @@ az aks nodepool add --resource-group kedapoc-rg --cluster-name kedapocaks --name
 
 az aks nodepool add --resource-group kedapoc-rg --cluster-name kedapocaks --name spotnodepool --priority Spot --eviction-policy Delete --spot-max-price -1 --enable-cluster-autoscaler --min-count 1 --max-count 2 --labels workloadtype=batch<br /><br />
 
+Below is how the NodePool are looking on the Azure Portal <br /><br />
+![Portal Node Pools](images/portalnodepools.png)
+
 ## Option 1:
 ![Option 1](images/option1.png)
 
