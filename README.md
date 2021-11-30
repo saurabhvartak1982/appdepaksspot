@@ -47,7 +47,7 @@ In this option we will make use of the below files: <br /><br />
 <b>op2net5appsvc.yaml</b> - This has the service manifest for the above net5app application. This uses the namespace <b>op2ns</b>.<br />
 <b>nginx.yaml</b> - Any other application to be deployed on any available OnDemand NodePool. This uses the namespace <b>otherapp</b>.<br />
   
-![Option 2](images/option2.png) <br /> <br />
+![Option 2](images/option2corrected.png) <br /> <br />
 
 As explained in the above diagram, the pods of the application <b>net5app</b> get distributed across the OnDemand NodePool (in my case - <b>odnplabel</b>) and the Spot NodePool (in my case - <b>spotnodepool</b>). Here, we are able to apply the control over how many pods can get deployed to the OnDemand (in my case - 2) and how many on the Spot NodePool (in my case - 5) - because of the <b>Node Affinity</b> setting of <b>requiredDuringSchedulingIgnoredDuringExecution</b> in <b>op2net5appsplitoddeploy.yaml</b>. The pods dont get deployed on the OnDemand NodePool <b>odnptaintlabel</b> as this NodePool has a taint <b>pooltype=primary:NoSchedule</b> which is not tolerated by the application defined in <b>op2net5appsplitoddeploy.yaml</b>. <br /><br />
 
