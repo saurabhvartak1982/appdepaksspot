@@ -38,33 +38,33 @@ As explained in the above diagram, the pods of the application <b>net5app</b> ge
 Below is the output that I get when I do a <b>kubectl apply -f</b> on the files <b>op1net5appdeploy.yaml</b>, <b>op1net5appsvc.yaml</b> and <b>nginx.yaml</b>. For the net5app application, results may differ in your case. Please create namespaces <b>op1ns</b> and <b>otherapp</b> for trying out option 1.<br />
 ![Option 1 Pod Placement](images/option1podplacement.png) <br /><br />
 
-### Using Cluster Autoscaler Profile with the 'expander' setting set to 'priority' (optional)
+### Using Cluster Autoscaler Profile with the 'expander' setting set to 'priority' (optional): 
 In Option 1, the <b>Cluster Autoscaler's Profile's 'expander'</b> setting can also be set for the more optimal use of the Spot Node Pool. <br />
-The Cluster Autoscaler Profile allows one to control the granular details in the way in which the Cluster Autoscaler's autoscaling works. In this the <b>expander</b> setting if set to the value <b>priority</b>, then it allows one to prioritize which of the Node Pools should autoscale first in-case the need for more compute arises. This setting can be used in our case to prioritize the Spot Node Pools to auto-scale as compared to the On-Demand Node Pool. <br />
+The <b>Cluster Autoscaler Profile</b> allows one to control the granular details in the way in which the Cluster Autoscaler's autoscaling works. In this the <b>expander</b> setting if set to the value <b>priority</b>, then it allows one to prioritize which of the Node Pools should autoscale first in-case the need for more compute arises. This setting can be used in our case to prioritize the Spot Node Pools to auto-scale as compared to the On-Demand Node Pool for the optimum use of the Spot Node Pools. <br />
 
 To make use of this setting, the following steps need to be carried out: <br />
 a. Create a Config Map by the name <b>cluster-autoscaler-priority-expander</b> in the <b>kube-system</b> namespace which mentions the priority of various Node Pools. Higher the number - higher is the priority. Sample Config Map as below: <br /><br />
 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cluster-autoscaler-priority-expander
-  namespace: kube-system
-data:
-  priorities: |-
-    10:
-      - .*<system node pool id>*
-    50:
-      - .*<on-demand node pool id>*
-    100:
-      - .*<spot node pool id>*
+apiVersion: v1 <br />
+kind: ConfigMap <br />
+metadata: <br />
+  name: cluster-autoscaler-priority-expander <br />
+  namespace: kube-system <br />
+data: <br />
+  priorities: |- <br />
+    10: <br />
+      - .*<system node pool id>* <br />
+    50: <br />
+      - .*<on-demand node pool id>* <br />
+    100: <br />
+      - .*<spot node pool id>* <br />
 
 In the above configuration, highest priority is given to the Spot Node Pool. <br />
 
-b. Enable the <b>expander</b> setting and set its value to <b>priority</b>. <br /><br />
+b. Enable the <b>expander</b> setting and set its value to <b>priority</b>. Example command as below:<br /><br />
 az aks update --resource-group <resource-group name> --name <cluster name> --cluster-autoscaler-profile expander=priority <br />
   
-More information on the <b>Cluster Autoscaler's Profile's 'expander'</b> setting can be found in the links mentioned in the <b>Reference<b/> section.
+More information on the <b>Cluster Autoscaler's Profile's 'expander'</b> setting can be found in the links mentioned in the <b>Reference<b/> section. <br /><br />
 
 ## Option 2: <br />
 In this option we will make use of the below files: <br /><br />
