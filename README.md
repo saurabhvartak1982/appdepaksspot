@@ -45,20 +45,21 @@ The <b>Cluster Autoscaler Profile</b> allows one to control the granular details
 To make use of this setting, the following steps need to be carried out: <br />
 a. Create a Config Map by the name <b>cluster-autoscaler-priority-expander</b> in the <b>kube-system</b> namespace which mentions the priority of various Node Pools. Higher the number - higher is the priority. Sample Config Map as below: <br /><br />
 
-apiVersion: v1 <br />
-kind: ConfigMap <br />
-metadata: <br />
-  name: cluster-autoscaler-priority-expander <br />
-  namespace: kube-system <br />
-data: <br />
-  priorities: |- <br />
-    10: <br />
-      - .*<system node pool id>* <br />
-    50: <br />
-      - .*<on-demand node pool id>* <br />
-    100: <br />
-      - .*<spot node pool id>* <br />
-
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-autoscaler-priority-expander
+  namespace: kube-system
+data:
+  priorities: |-
+    10:
+      - .*systemnp*
+    50:
+      - .*userpool*
+    100:
+      - .*spotnp2*
+```
 In the above configuration, highest priority is given to the Spot Node Pool. <br />
 
 b. Enable the <b>expander</b> setting and set its value to <b>priority</b>. Example command as below:<br /><br />
