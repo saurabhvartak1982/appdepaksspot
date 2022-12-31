@@ -54,11 +54,11 @@ metadata:
 data:
   priorities: |-
     10:
-      - .*systemnp*
+      - .*<system node pool id>*
     50:
-      - .*userpool*
+      - .*<on-demand node pool id>*
     100:
-      - .*spotnp2*
+      - .*<spot node pool id>*
 ```
 In the above configuration, highest priority is given to the Spot Node Pool. <br />
 
